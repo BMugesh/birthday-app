@@ -306,7 +306,7 @@ export default function MidnightCountdown({
               </motion.div>
 
               {/* 22nd Birthday Heading */}
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.2 }}
@@ -322,7 +322,7 @@ export default function MidnightCountdown({
                 transition={{ duration: 1, delay: 0.4 }}
                 className="font-serif text-lg sm:text-2xl md:text-3xl text-[#eec2d3] max-w-2xl leading-relaxed mb-8 drop-shadow-md"
               >
-                Entering your golden 22nd year of life ✨<br/>
+                Entering your golden 22nd year of life ✨<br />
                 May your heart always overflow with endless joy, smiles, peace, and God's richest blessings!
               </motion.p>
 
@@ -373,7 +373,7 @@ export default function MidnightCountdown({
                   Special Countdown to July 27 🎂
                 </span>
                 <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-[#e3bb7d] font-medium tracking-wide">
-                  Anu Akka's 22nd Birthday Begins At Midnight...
+                  Something New Will Begins At Midnight...
                 </h2>
               </div>
 
