@@ -103,7 +103,7 @@ export const ALL_PHOTOS: PhotoItem[] = [
     category: 'memories',
     rot: -4,
     emoji: "🌲",
-    objectPos: "object-top"
+    objectPos: "object-[center_80%]"
   },
   {
     id: 10,
@@ -183,7 +183,7 @@ export const ALL_PHOTOS: PhotoItem[] = [
     category: 'portraits',
     rot: -3,
     emoji: "🌷",
-    objectPos: "object-center"
+    objectPos: "object-top"
   },
   {
     id: 18,
@@ -193,7 +193,7 @@ export const ALL_PHOTOS: PhotoItem[] = [
     category: 'portraits',
     rot: 5,
     emoji: "🪞",
-    objectPos: "object-center"
+    objectPos: "object-top"
   },
   {
     id: 19,
