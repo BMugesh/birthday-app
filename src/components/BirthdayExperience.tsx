@@ -29,7 +29,9 @@ const InteractiveHearts = dynamic(() => import('@/components/scenes/InteractiveH
 const MemorySky = dynamic(() => import('@/components/scenes/MemorySky'), { ssr: false });
 const CakeScene = dynamic(() => import('@/components/scenes/CakeScene'), { ssr: false });
 const MusicPlayer = dynamic(() => import('@/components/scenes/MusicPlayer'), { ssr: false });
+const SisterCoupons = dynamic(() => import('@/components/scenes/SisterCoupons'), { ssr: false });
 const LastThingScene = dynamic(() => import('@/components/scenes/LastThingScene'), { ssr: false });
+const PostcardScene = dynamic(() => import('@/components/scenes/PostcardScene'), { ssr: false });
 const EndingScene = dynamic(() => import('@/components/scenes/EndingScene'), { ssr: false });
 
 type Phase = 'countdown' | 'prologue' | 'loading' | 'experience';
@@ -49,7 +51,9 @@ const NAV_SECTIONS = [
   { id: 'sky', label: 'Sky', emoji: '🪔' },
   { id: 'cake', label: 'Cake', emoji: '🎂' },
   { id: 'music', label: 'Music', emoji: '🎵' },
+  { id: 'coupons', label: 'Vouchers', emoji: '🎟️' },
   { id: 'last-thing', label: 'Promise', emoji: '🌟' },
+  { id: 'postcard', label: 'Postcard', emoji: '🖼️' },
   { id: 'ending', label: 'End', emoji: '🌙' },
 ];
 
@@ -195,7 +199,9 @@ export default function BirthdayExperience() {
               <section id="sky"><MemorySky /></section>
               <section id="cake"><CakeScene /></section>
               <section id="music"><MusicPlayer /></section>
+              <section id="coupons"><SisterCoupons /></section>
               <section id="last-thing"><LastThingScene /></section>
+              <section id="postcard"><PostcardScene /></section>
               <section id="ending"><EndingScene /></section>
             </main>
           </SmoothScroll>

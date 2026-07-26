@@ -3,73 +3,73 @@
 import { motion, Variants } from 'framer-motion';
 
 const timelineData = [
-  { 
-    year: '🌸 July 27, 2021', 
-    title: 'Where It All Grew Deeper', 
-    text: 'The day God wrote a new chapter. We may not have shared the same childhood, but from this time, my heart chose you as my sister.', 
+  {
+    year: '🌸 July 27, 2021',
+    title: 'Where It All Grew Deeper',
+    text: 'The day God wrote a new chapter. We may not have shared the same childhood, but from this time, my heart chose you as my sister.',
     emoji: '🌸',
     image: '/images/15_red_dress_bday21.jpg',
     caption: 'July 27, 2021 Birthday ❤️',
     objectPos: 'object-[center_10%]'
   },
-  { 
-    year: '💛 July 27, 2022', 
-    title: 'Growing Closer Every Day', 
-    text: "I didn't know then... one simple relationship would become one of the greatest blessings in my life. Another birthday celebrated with love.", 
+  {
+    year: '💛 July 27, 2022',
+    title: 'Growing Closer Every Day',
+    text: "I didn't know then... one simple relationship would become one of the greatest blessings in my life. Another birthday celebrated with love.",
     emoji: '💛',
     image: '/images/16_black_dress_bday22.jpg',
     caption: 'July 27, 2022 Birthday ✨',
-    objectPos: 'object-top'
+    objectPos: 'object-[center_20%]'
   },
-  { 
-    year: '🌻 Campus Days', 
-    title: 'Becoming Family', 
-    text: "Without realizing it, our campus conversations became comfort... and 'you' slowly became 'my Akka.'", 
+  {
+    year: '🌻 Campus Days',
+    title: 'Becoming Family',
+    text: "Without realizing it, our campus conversations became comfort... and 'you' slowly became 'my Akka.'",
     emoji: '🌻',
     image: '/images/03_campus_selfie.jpg',
     caption: 'Campus Memories 🏫',
-    objectPos: 'object-top'
+    objectPos: 'object-[center_30%]'
   },
-  { 
-    year: '🏆 Milestones', 
-    title: 'Celebrating Victories', 
-    text: 'Every trophy, every win, every achievement feels ten times sweeter when you are standing right beside me.', 
+  {
+    year: '🏆 Milestones',
+    title: 'Celebrating Victories',
+    text: 'Every trophy, every win, every achievement feels ten times sweeter when you are standing right beside me.',
     emoji: '🏆',
     image: '/images/02_trophy_memory.jpg',
     caption: 'Our Shared Victory 🥇',
     objectPos: 'object-top'
   },
-  { 
-    year: '🌸 Every Laugh', 
-    title: 'Moments Stitched in Gold', 
-    text: 'Every laugh, every silly selfie, every quiet walk... quietly stitched us together into an unbreakable family.', 
+  {
+    year: '🌸 Every Laugh',
+    title: 'Moments Stitched in Gold',
+    text: 'Every laugh, every silly selfie, every quiet walk... quietly stitched us together into an unbreakable family.',
     emoji: '🌸',
     image: '/images/01_favourite_day.jpg',
     caption: 'My Favourite Day 💖',
     objectPos: 'object-center'
   },
-  { 
-    year: '🌙 Special Events', 
-    title: 'Shining Like a Queen', 
-    text: 'Seeing you dressed in traditional silk saree... proud, regal, and full of grace. You inspire me every day.', 
+  {
+    year: '🌙 Special Events',
+    title: 'Shining Like a Queen',
+    text: 'Seeing you dressed in traditional silk saree... proud, regal, and full of grace. You inspire me every day.',
     emoji: '👑',
     image: '/images/13_silk_saree_regal.jpg',
     caption: 'Elegance & Grace ✨',
-    objectPos: 'object-top'
+    objectPos: 'object-[center_10%]'
   },
-  { 
-    year: '❤️ Today', 
-    title: 'July 27, 2026', 
-    text: "Today isn't just your birthday. It's the day the world was blessed with someone who became my sister, my safe place, and one of the greatest gifts God ever gave me.", 
+  {
+    year: '❤️ Today',
+    title: 'July 27, 2026',
+    text: "Today isn't just your birthday. It's the day the world was blessed with someone who became my sister, my safe place, and one of the greatest gifts God ever gave me.",
     emoji: '❤️',
     image: '/images/07_family_uniform.jpg',
     caption: 'My Akka, My Family ❤️',
-    objectPos: 'object-top'
+    objectPos: 'object-[center_20%]'
   },
-  { 
-    year: '♾️ Forever', 
-    title: 'In Every Lifetime', 
-    text: "We may not share the same blood... but we share something even stronger—a bond that love chose. And if I had the chance to choose my sister in every lifetime... I'd still choose you. Every single time. ❤️", 
+  {
+    year: '♾️ Forever',
+    title: 'In Every Lifetime',
+    text: "We may not share the same blood... but we share something even stronger—a bond that love chose. And if I had the chance to choose my sister in every lifetime... I'd still choose you. Every single time. ❤️",
     emoji: '♾️',
     image: '/images/19_family_car_selfie.jpg',
     caption: 'Forever & Always 🚘',
@@ -142,7 +142,7 @@ export default function TimelineScene() {
               const isEven = index % 2 === 0;
               return (
                 <div key={index} className="relative flex items-center md:justify-between flex-col md:flex-row w-full">
-                  
+
                   {/* Content Card */}
                   <div className={`w-full md:w-5/12 ${isEven ? 'md:order-1' : 'md:order-3'}`}>
                     <motion.div
@@ -152,8 +152,8 @@ export default function TimelineScene() {
                       {/* Photo Thumbnail with generous height and custom top positioning */}
                       {item.image && (
                         <div className="w-full h-64 sm:h-72 md:h-80 rounded-xl overflow-hidden mb-5 relative bg-black/40 border border-white/10 shadow-inner">
-                          <img 
-                            src={item.image} 
+                          <img
+                            src={item.image}
                             alt={item.title}
                             className={`w-full h-full object-cover ${item.objectPos || 'object-top'} group-hover:scale-105 transition-transform duration-700`}
                           />
@@ -177,7 +177,7 @@ export default function TimelineScene() {
                   <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 -translate-x-1/2 md:-translate-y-1/2 w-12 h-12 rounded-full bg-[#0a0d24] border-2 border-[#e3bb7d] flex items-center justify-center z-20 shadow-[0_0_15px_rgba(227,187,125,0.4)] md:order-2">
                     <span className="text-xl">{item.emoji}</span>
                   </div>
-                  
+
                   {/* Spacer for desktop layout */}
                   <div className="hidden md:block w-5/12 order-1 md:order-1" style={{ display: isEven ? 'none' : 'block' }}></div>
                   <div className="hidden md:block w-5/12 order-3 md:order-3" style={{ display: isEven ? 'block' : 'none' }}></div>
@@ -195,14 +195,14 @@ export default function TimelineScene() {
             viewport={{ once: true, margin: "-100px" }}
             className="space-y-20"
           >
-            <motion.p 
+            <motion.p
               variants={climaxVariants}
               className="font-serif text-3xl md:text-4xl lg:text-5xl leading-relaxed text-[#f8f0e3]"
             >
               "People often say that family is made by blood. I smile... because I know mine was made by love. Thank you for becoming my sister, Anu Akka."
             </motion.p>
 
-            <motion.p 
+            <motion.p
               variants={climaxVariants}
               className="font-serif text-3xl md:text-4xl lg:text-5xl leading-relaxed text-[#eec2d3]"
             >
