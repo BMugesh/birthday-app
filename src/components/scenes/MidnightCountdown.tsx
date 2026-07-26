@@ -36,6 +36,12 @@ export default function MidnightCountdown({
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [mounted, setMounted] = useState(false);
   const [stars, setStars] = useState<{ id: number; top: string; left: string; delay: number }[]>([]);
+  
+  // 5-second final countdown state
+  const [inFinalCountdown, setInFinalCountdown] = useState(false);
+  const [fiveSecCount, setFiveSecCount] = useState<number>(5);
+  const [isCelebrationStarted, setIsCelebrationStarted] = useState(false);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const targetTime = targetDate.getTime();
@@ -61,27 +67,49 @@ export default function MidnightCountdown({
     };
 
     // Initial calculation
-    setTimeLeft(calculateTimeLeft());
+    const remaining = calculateTimeLeft();
+    setTimeLeft(remaining);
+
+    if (remaining <= 0 && !inFinalCountdown && !isCelebrationStarted) {
+      triggerFinalCountdown();
+      return;
+    }
 
     const timer = setInterval(() => {
-      const remaining = calculateTimeLeft();
-      setTimeLeft(remaining);
+      const currentRemaining = calculateTimeLeft();
+      setTimeLeft(currentRemaining);
 
-      if (remaining <= 0) {
+      if (currentRemaining <= 0) {
         clearInterval(timer);
+        if (!inFinalCountdown && !isCelebrationStarted) {
+          triggerFinalCountdown();
+        }
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetTime, mounted]);
+  }, [targetTime, mounted, inFinalCountdown, isCelebrationStarted]);
 
-  const secondsTotal = Math.floor(timeLeft / 1000);
-  const isClose = secondsTotal > 0 && secondsTotal <= 10;
-  const isFinished = secondsTotal === 0;
+  // Function to trigger the 5-second final countdown
+  const triggerFinalCountdown = () => {
+    setInFinalCountdown(true);
+    setFiveSecCount(5);
+
+    let count = 5;
+    const interval = setInterval(() => {
+      count -= 1;
+      setFiveSecCount(count);
+      if (count <= 0) {
+        clearInterval(interval);
+        setInFinalCountdown(false);
+        setIsCelebrationStarted(true);
+      }
+    }, 1000);
+  };
 
   // FIREWORKS & HEARTS CANVAS PHYSICS ENGINE
   useEffect(() => {
-    if (!isFinished) return;
+    if (!isCelebrationStarted) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -121,14 +149,12 @@ export default function MidnightCountdown({
         const angle = (Math.PI * 2 * i) / count;
         const speed = Math.random() * 6 + 2;
 
-        // Heart shape math trick for half the particles
         const isHeart = Math.random() > 0.4;
         let vx = Math.cos(angle) * speed;
         let vy = Math.sin(angle) * speed;
 
         if (isHeart) {
           const t = Math.random() * Math.PI * 2;
-          // Heart formula
           vx = 16 * Math.pow(Math.sin(t), 3) * (Math.random() * 0.3 + 0.2);
           vy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * (Math.random() * 0.3 + 0.2);
         }
@@ -147,7 +173,6 @@ export default function MidnightCountdown({
         });
       }
 
-      // Add floating text heart symbols at explosion point
       for (let k = 0; k < 6; k++) {
         floatingHearts.push({
           x: x + (Math.random() * 40 - 20),
@@ -167,19 +192,16 @@ export default function MidnightCountdown({
       ctx.fillStyle = 'rgba(4, 5, 15, 0.25)';
       ctx.fillRect(0, 0, width, height);
 
-      // Random rocket launch
-      if (time - lastRocketTime > 400) {
+      if (time - lastRocketTime > 350) {
         spawnRocket();
-        if (Math.random() > 0.5) spawnRocket();
+        if (Math.random() > 0.4) spawnRocket();
         lastRocketTime = time;
       }
 
-      // Update rockets
       for (let i = rockets.length - 1; i >= 0; i--) {
         const r = rockets[i];
         r.y += r.vy;
 
-        // Draw trail
         ctx.beginPath();
         ctx.arc(r.x, r.y, 3, 0, Math.PI * 2);
         ctx.fillStyle = r.color;
@@ -194,7 +216,6 @@ export default function MidnightCountdown({
         }
       }
 
-      // Update particles
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx;
@@ -219,7 +240,6 @@ export default function MidnightCountdown({
         ctx.restore();
       }
 
-      // Update floating hearts text
       for (let i = floatingHearts.length - 1; i >= 0; i--) {
         const h = floatingHearts[i];
         h.x += h.vx;
@@ -247,10 +267,11 @@ export default function MidnightCountdown({
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isFinished]);
+  }, [isCelebrationStarted]);
 
   if (!mounted) return null;
 
+  const secondsTotal = Math.floor(timeLeft / 1000);
   const days = Math.floor(secondsTotal / (3600 * 24));
   const hours = Math.floor((secondsTotal % (3600 * 24)) / 3600);
   const minutes = Math.floor((secondsTotal % 3600) / 60);
@@ -259,7 +280,7 @@ export default function MidnightCountdown({
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#04050f] p-4 text-[#f8f0e3]">
       {/* Full-screen Fireworks & Hearts Canvas */}
-      {isFinished && (
+      {isCelebrationStarted && (
         <canvas
           ref={canvasRef}
           className="absolute inset-0 z-0 pointer-events-none w-full h-full"
@@ -267,7 +288,7 @@ export default function MidnightCountdown({
       )}
 
       {/* Twinkling Stars Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         {stars.map((star) => (
           <motion.div
             key={star.id}
@@ -285,7 +306,48 @@ export default function MidnightCountdown({
 
       <div className="z-10 flex w-full flex-col items-center justify-center text-center px-4 max-w-4xl">
         <AnimatePresence mode="wait">
-          {isFinished ? (
+          
+          {/* STAGE 1: 5-SECOND FINAL COUNTDOWN */}
+          {inFinalCountdown ? (
+            <motion.div
+              key={`five-sec-${fiveSecCount}`}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: [0.8, 1.25, 1], opacity: 1 }}
+              exit={{ scale: 1.5, opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              className="relative flex flex-col items-center justify-center py-12"
+            >
+              {/* Concentric Pulsing Rings */}
+              <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                <motion.div
+                  animate={{ scale: [1, 2.5], opacity: [0.8, 0] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                  className="w-48 h-48 rounded-full border-4 border-[#e3bb7d]"
+                />
+                <motion.div
+                  animate={{ scale: [1, 3.2], opacity: [0.6, 0] }}
+                  transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                  className="w-48 h-48 rounded-full border-2 border-[#eec2d3]"
+                />
+              </div>
+
+              <span className="font-sans text-sm sm:text-base uppercase tracking-[0.4em] text-[#eec2d3] mb-4 font-semibold">
+                Get Ready, Anu Akka... 💖
+              </span>
+
+              {/* Big Animated 5-Second Number */}
+              <motion.div 
+                className="font-serif text-8xl sm:text-[12rem] md:text-[16rem] font-bold text-[#e3bb7d] leading-none drop-shadow-[0_0_50px_rgba(227,187,125,0.9)]"
+              >
+                {fiveSecCount}
+              </motion.div>
+
+              <span className="font-handwritten text-2xl sm:text-4xl text-[#c7b3ea] mt-6">
+                The magical moment is here! ✨
+              </span>
+            </motion.div>
+          ) : isCelebrationStarted ? (
+            /* STAGE 2: FIREWORKS & CELEBRATION */
             <motion.div
               key="finished"
               initial={{ opacity: 0, scale: 0.8, y: 30 }}
@@ -306,7 +368,7 @@ export default function MidnightCountdown({
               </motion.div>
 
               {/* 22nd Birthday Heading */}
-              <motion.h1
+              <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.2 }}
@@ -322,7 +384,7 @@ export default function MidnightCountdown({
                 transition={{ duration: 1, delay: 0.4 }}
                 className="font-serif text-lg sm:text-2xl md:text-3xl text-[#eec2d3] max-w-2xl leading-relaxed mb-8 drop-shadow-md"
               >
-                Entering your golden 22nd year of life ✨<br />
+                Entering your golden 22nd year of life ✨<br/>
                 May your heart always overflow with endless joy, smiles, peace, and God's richest blessings!
               </motion.p>
 
@@ -344,23 +406,8 @@ export default function MidnightCountdown({
                 Created with thousands of memories & love by Bala ❤️
               </p>
             </motion.div>
-          ) : isClose ? (
-            <motion.div
-              key={`close-${secondsTotal}`}
-              initial={{ opacity: 0.5, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col items-center justify-center"
-            >
-              <h2 className="font-handwritten text-3xl sm:text-4xl text-[#eec2d3] mb-4">
-                Get ready... Midnight is almost here! 💖
-              </h2>
-              <span className="font-serif text-6xl sm:text-8xl md:text-[10rem] text-[#e3bb7d] tracking-widest drop-shadow-[0_0_30px_rgba(227,187,125,0.6)]">
-                23:59:{String(seconds).padStart(2, '0')}
-              </span>
-            </motion.div>
           ) : (
+            /* STAGE 3: MAIN COUNTDOWN */
             <motion.div
               key="countdown"
               initial={{ opacity: 0, y: 20 }}
@@ -373,7 +420,7 @@ export default function MidnightCountdown({
                   Special Countdown to July 27 🎂
                 </span>
                 <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-[#e3bb7d] font-medium tracking-wide">
-                  Something New Will Begins At Midnight...
+                  Anu Akka's 22nd Birthday Begins At Midnight...
                 </h2>
               </div>
 
@@ -383,10 +430,26 @@ export default function MidnightCountdown({
                 <CountdownBox label="Minutes" value={minutes} />
                 <CountdownBox label="Seconds" value={seconds} />
               </div>
+
+              {/* Test Button for 5-sec countdown */}
+              <button
+                onClick={triggerFinalCountdown}
+                className="px-5 py-2 rounded-full bg-white/10 hover:bg-[#e3bb7d] text-white hover:text-[#04050f] font-sans text-xs uppercase tracking-wider font-bold transition-all border border-white/20 hover:border-[#e3bb7d] cursor-pointer"
+              >
+                ▶ Test 5-Sec Final Countdown
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+
+      {/* Skip / Preview Button */}
+      <button
+        onClick={onComplete}
+        className="absolute bottom-8 right-8 z-50 text-xs sm:text-sm md:text-base font-sans font-medium tracking-wider text-white/40 transition-all hover:text-white/90 hover:tracking-widest bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10"
+      >
+        Skip to Experience →
+      </button>
     </div>
   );
 }

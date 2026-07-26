@@ -123,12 +123,8 @@ function FloatingNav({ activeSection }: { activeSection: string }) {
 }
 
 export default function BirthdayExperience() {
-  const [phase, setPhase] = useState<Phase>(() => {
-    const now = new Date();
-    const target = new Date('2026-07-27T00:00:00+05:30');
-    if (now >= target) return 'prologue';
-    return 'countdown';
-  });
+  // Always start at countdown phase so every visit gets the 5-sec countdown & fireworks intro
+  const [phase, setPhase] = useState<Phase>('countdown');
 
   const [activeSection, setActiveSection] = useState('hero');
 
