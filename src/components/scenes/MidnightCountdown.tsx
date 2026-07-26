@@ -387,14 +387,6 @@ export default function MidnightCountdown({
           )}
         </AnimatePresence>
       </div>
-
-      {/* Skip / Preview Button */}
-      <button
-        onClick={onComplete}
-        className="absolute bottom-8 right-8 z-50 text-xs sm:text-sm md:text-base font-sans font-medium tracking-wider text-white/40 transition-all hover:text-white/90 hover:tracking-widest bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10"
-      >
-        Skip to Experience →
-      </button>
     </div>
   );
 }
